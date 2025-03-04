@@ -16,6 +16,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 @Component
@@ -27,6 +28,8 @@ public class JwtUtils {
 
     @Value("${security.jwt.token.expiration-time}")
     private int jwtExpirationMs;
+    
+    private Key key;
 
     public String generateJwtToken(Authentication authentication) {
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
@@ -40,13 +43,11 @@ public class JwtUtils {
     }
     
     private Key key() {
-        // Utiliser Keys.secretKeyFor pour générer une clé garantie suffisamment sécurisée
-        // au lieu d'utiliser la clé de configuration
-        return Keys.secretKeyFor(SignatureAlgorithm.HS256);
-        
-        // OU si vous voulez continuer à utiliser votre clé de configuration, 
-        // assurez-vous qu'elle fait au moins 256 bits (32 caractères) 
-        // return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+        if (key == null) {
+            // Utiliser la clé configurée dans application.yml
+            key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+        }
+        return key;
     }
 
     public String getUserNameFromJwtToken(String token) {
