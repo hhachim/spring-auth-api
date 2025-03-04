@@ -23,6 +23,7 @@ import com.auth.api.dto.JwtResponse;
 import com.auth.api.dto.LoginRequest;
 import com.auth.api.dto.MessageResponse;
 import com.auth.api.dto.SignupRequest;
+import com.auth.api.exception.UserAlreadyExistsException;
 import com.auth.api.model.ERole;
 import com.auth.api.model.Role;
 import com.auth.api.model.User;
@@ -76,11 +77,11 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userService.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Erreur: Nom d'utilisateur déjà utilisé!"));
+            throw new UserAlreadyExistsException("Erreur: Nom d'utilisateur déjà utilisé!");
         }
 
         if (userService.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Erreur: Email déjà utilisé!"));
+            throw new UserAlreadyExistsException("Erreur: Email déjà utilisé!");
         }
 
         // Création du nouveau compte utilisateur
