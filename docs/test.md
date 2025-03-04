@@ -1,7 +1,7 @@
 # Inscription d'un utilisateur
 curl -X POST http://localhost:8086/api/auth/signup \
   -H "Content-Type: application/json" \
-  -d '{"username":"testuser","email":"test@example.com","password":"password123","roles":["admin"]}'
+  -d '{"username":"testuser","email":"test@example.com","password":"password123","roles":["admin","user"]}'
 
 # Connexion et récupération du token JWT
 curl -X POST http://localhost:8086/api/auth/signin \
@@ -10,7 +10,7 @@ curl -X POST http://localhost:8086/api/auth/signin \
 
 # Accès à un endpoint protégé avec le token JWT
 curl -X GET http://localhost:8086/api/users \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImlhdCI6MTc0MTA5NjYwOCwiZXhwIjoxNzQxMTgzMDA4fQ.soIJuww0-haV8ce9pJ324Yy2x5HoCM9OgzpBGEjIWNQ"
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImlhdCI6MTc0MTEyNzc2OCwiZXhwIjoxNzQxMjE0MTY4fQ.qmJ_MSfdxq5BhlguAl9BR_DHevqFC6XZtcJWHpMd--4"
 
 
 

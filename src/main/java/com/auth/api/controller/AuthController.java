@@ -27,9 +27,9 @@ import com.auth.api.model.ERole;
 import com.auth.api.model.Role;
 import com.auth.api.model.User;
 import com.auth.api.repository.RoleRepository;
-import com.auth.api.repository.UserRepository;
 import com.auth.api.security.jwt.JwtUtils;
 import com.auth.api.security.services.UserDetailsImpl;
+import com.auth.api.service.UserService;
 
 import jakarta.validation.Valid;
 
@@ -41,7 +41,7 @@ public class AuthController {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @Autowired
     RoleRepository roleRepository;
@@ -75,11 +75,11 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+        if (userService.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Erreur: Nom d'utilisateur déjà utilisé!"));
         }
 
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (userService.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Erreur: Email déjà utilisé!"));
         }
 
@@ -113,7 +113,7 @@ public class AuthController {
         }
 
         user.setRoles(roles);
-        userRepository.save(user);
+        userService.save(user);
 
         return ResponseEntity.ok(new MessageResponse("Utilisateur enregistré avec succès!"));
     }
@@ -124,6 +124,7 @@ public class AuthController {
             String jwt = headerAuth.substring(7);
             if (jwtUtils.validateJwtToken(jwt)) {
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
+                User user = userService.getUserByUsername(username);
                 
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                 String newJwt = jwtUtils.generateJwtToken(authentication);
