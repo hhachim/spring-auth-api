@@ -33,34 +33,22 @@ public class UserController {
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        try {
-            User user = userService.getUserById(id);
-            return ResponseEntity.ok(user);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+        User user = userService.getUserById(id);
+        return ResponseEntity.ok(user);
     }
     
     @GetMapping("/me")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<User> getCurrentUser() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        try {
-            User user = userService.getUserByUsername(userDetails.getUsername());
-            return ResponseEntity.ok(user);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+        User user = userService.getUserByUsername(userDetails.getUsername());
+        return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-        try {
-            userService.deleteUser(id);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+        userService.deleteUser(id);
+        return ResponseEntity.ok().build();
     }
 }
