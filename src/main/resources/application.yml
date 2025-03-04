@@ -5,16 +5,18 @@ spring:
   application:
     name: auth-api
   datasource:
-    url: jdbc:h2:mem:authdb
-    username: sa
-    password: password
-    driver-class-name: org.h2.Driver
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+    #url: jdbc:h2:mem:authdb
+    url: jdbc:mysql://localhost:3360/test_auth_api?useSSL=false&serverTimezone=UTC
+
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  # h2:
+  #   console:
+  #     enabled: true
+  #     path: /h2-console
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: update
     show-sql: true
