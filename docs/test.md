@@ -12,7 +12,10 @@ curl -X POST http://localhost:8086/api/auth/signin \
 curl -X GET http://localhost:8086/api/users \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImlhdCI6MTc0MTEyNzc2OCwiZXhwIjoxNzQxMjE0MTY4fQ.qmJ_MSfdxq5BhlguAl9BR_DHevqFC6XZtcJWHpMd--4"
 
-
+# Refresh
+curl -X POST http://localhost:8086/api/auth/refresh \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImlhdCI6MTc0MTEyNzc2OCwiZXhwIjoxNzQxMjE0MTY4fQ.qmJ_MSfdxq5BhlguAl9BR_DHevqFC6XZtcJWHpMd--4"
+{"token":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImlhdCI6MTc0MTEzMDQ0MCwiZXhwIjoxNzQxMjE2ODQwfQ.VTXBhGSa_TU6MV6jo5vXqo4ARpYfcAy25JJyN0VmbOc","id":4,"username":"testuser","email":"test@example.com","roles":["ROLE_ADMIN","ROLE_USER"],"type":"Bearer"}%
 
 Points importants à noter :
 
