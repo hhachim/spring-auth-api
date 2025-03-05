@@ -22,14 +22,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.auth.api.dto.JwtResponse;
 import com.auth.api.dto.LoginRequest;
 import com.auth.api.dto.MessageResponse;
+import com.auth.api.dto.PasswordResetRequest;
+import com.auth.api.dto.PasswordResetTokenRequest;
 import com.auth.api.dto.SignupRequest;
 import com.auth.api.exception.UserAlreadyExistsException;
 import com.auth.api.model.ERole;
 import com.auth.api.model.Role;
 import com.auth.api.model.User;
 import com.auth.api.repository.RoleRepository;
+import com.auth.api.repository.UserRepository;
 import com.auth.api.security.jwt.JwtUtils;
 import com.auth.api.security.services.UserDetailsImpl;
+import com.auth.api.service.EmailService;
 import com.auth.api.service.UserService;
 
 import jakarta.validation.Valid;
@@ -48,10 +52,16 @@ public class AuthController {
     RoleRepository roleRepository;
 
     @Autowired
+    UserRepository userRepository;
+
+    @Autowired
     PasswordEncoder encoder;
 
     @Autowired
     JwtUtils jwtUtils;
+    
+    @Autowired
+    EmailService emailService;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -145,5 +155,38 @@ public class AuthController {
         }
         
         return ResponseEntity.badRequest().body(new MessageResponse("Erreur: Token invalide ou expiré!"));
+    }
+    
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> requestPasswordReset(@Valid @RequestBody PasswordResetRequest resetRequest) {
+        try {
+            String token = userService.createPasswordResetTokenForUser(resetRequest.getEmail());
+            
+            // Envoi de l'email avec le token de réinitialisation
+            emailService.sendPasswordResetEmail(resetRequest.getEmail(), token);
+            
+            return ResponseEntity.ok(new MessageResponse("Un e-mail de réinitialisation de mot de passe a été envoyé à l'adresse fournie."));
+        } catch (Exception e) {
+            // Ne pas révéler si l'e-mail existe ou non pour des raisons de sécurité
+            return ResponseEntity.ok(new MessageResponse("Si l'e-mail existe dans notre système, un lien de réinitialisation sera envoyé."));
+        }
+    }
+    
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody PasswordResetTokenRequest resetRequest) {
+        try {
+            // Récupérer l'utilisateur par token avant de le valider et de réinitialiser le mot de passe
+            User user = userRepository.findByResetPasswordToken(resetRequest.getToken())
+                    .orElseThrow(() -> new RuntimeException("Token invalide"));
+            
+            userService.resetPasswordWithToken(resetRequest.getToken(), resetRequest.getNewPassword());
+            
+            // Envoyer un email de confirmation après la réinitialisation réussie
+            emailService.sendPasswordResetConfirmationEmail(user.getEmail());
+            
+            return ResponseEntity.ok(new MessageResponse("Mot de passe réinitialisé avec succès!"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
     }
 }

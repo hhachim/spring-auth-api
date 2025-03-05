@@ -26,6 +26,18 @@ public class GlobalExceptionHandler {
         
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+    
+    @ExceptionHandler(InvalidResetTokenException.class)
+    public ResponseEntity<?> invalidResetTokenException(InvalidResetTokenException ex, WebRequest request) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", new Date());
+        body.put("message", ex.getMessage());
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("error", "Bad Request");
+        body.put("path", request.getDescription(false));
+        
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<?> resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
