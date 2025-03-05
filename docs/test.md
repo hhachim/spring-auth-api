@@ -17,6 +17,17 @@ curl -X POST http://localhost:8086/api/auth/refresh \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImlhdCI6MTc0MTEyNzc2OCwiZXhwIjoxNzQxMjE0MTY4fQ.qmJ_MSfdxq5BhlguAl9BR_DHevqFC6XZtcJWHpMd--4"
 {"token":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImlhdCI6MTc0MTEzMDQ0MCwiZXhwIjoxNzQxMjE2ODQwfQ.VTXBhGSa_TU6MV6jo5vXqo4ARpYfcAy25JJyN0VmbOc","id":4,"username":"testuser","email":"test@example.com","roles":["ROLE_ADMIN","ROLE_USER"],"type":"Bearer"}%
 
+# mot de passe oublié
+
+## forgot password
+curl -X POST http://localhost:8086/api/auth/forgot-password \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com"}'
+## reset password
+curl -X POST http://localhost:8086/api/auth/reset-password \
+  -H "Content-Type: application/json" \
+  -d '{"token":"le-token-généré","newPassword":"nouveau-mot-de-passe"}'
+
 Points importants à noter :
 
 Le AuthController a trois endpoints :
