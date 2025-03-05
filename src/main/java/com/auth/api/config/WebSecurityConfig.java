@@ -60,12 +60,28 @@ public class WebSecurityConfig {
             .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth ->
-                auth.requestMatchers("/api/auth/**").permitAll()
-                    // Suppression de la ligne pour H2 console
+                auth
+                    // API endpoints publics
+                    .requestMatchers("/api/auth/**").permitAll()
+                    
+                    // Pages de réinitialisation de mot de passe
+                    .requestMatchers("/reset-password").permitAll()
+                    .requestMatchers("/reset-password-success").permitAll()
+                    .requestMatchers("/forgot-password").permitAll()
+                    .requestMatchers("/login").permitAll()
+                    .requestMatchers("/error").permitAll()
+                    
+                    // Ressources statiques
+                    .requestMatchers("/static/**").permitAll()
+                    .requestMatchers("/css/**").permitAll()
+                    .requestMatchers("/js/**").permitAll()
+                    .requestMatchers("/images/**").permitAll()
+                    .requestMatchers("/webjars/**").permitAll()
+                    .requestMatchers("/favicon.ico").permitAll()
+                    
+                    // Tout le reste nécessite une authentification
                     .anyRequest().authenticated()
             );
-        
-        // Suppression de la configuration des headers pour H2
         
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
