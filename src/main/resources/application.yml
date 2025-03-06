@@ -24,7 +24,7 @@ spring:
     # Configuration SMTP à adapter avec vos informations
     host: sandbox.smtp.mailtrap.io
     port: 587
-    username: xxxx
+    username: xxx
     password: xxx
     properties:
       mail:
