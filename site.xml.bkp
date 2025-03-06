@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="API Authentication JWT">
+  <bannerLeft>
+    <name>API Authentication JWT</name>
+  </bannerLeft>
+  
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-fluido-skin</artifactId>
+    <version>1.11.2</version>
+  </skin>
+  
+  <body>
+    <menu name="Overview">
+      <item name="Introduction" href="index.html"/>
+    </menu>
+    
+    <menu name="Tests et Qualité">
+      <item name="Rapports de tests" href="surefire-report.html"/>
+      <item name="Couverture" href="jacoco/index.html"/>
+      <item name="PMD" href="pmd.html"/>
+      <item name="SpotBugs" href="spotbugs.html"/>
+      <item name="Checkstyle" href="checkstyle.html"/>
+      <item name="Dépendances" href="dependency-analysis.html"/>
+      <item name="JDepend" href="jdepend-report.html"/>
+      <item name="Javadoc" href="apidocs/index.html"/>
+    </menu>
+    
+    <menu ref="reports"/>
+  </body>
+</project>

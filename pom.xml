@@ -148,6 +148,57 @@
 					</reportSet>
 				</reportSets>
 			</plugin>
+			<!-- PMD Reporting -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.21.0</version>
+			</plugin>
+
+			<!-- SpotBugs Reporting -->
+			<!-- <plugin>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+				<version>4.7.3.6</version>
+			</plugin> -->
+
+			<!-- CheckStyle Reporting -->
+			<!-- <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.3.0</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>checkstyle</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin> -->
+
+			<!-- Dependency Analysis -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.6.0</version>
+			</plugin>
+
+			<!-- Javadoc pour l'analyse de la documentation -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.5.0</version>
+				<configuration>
+					<source>17</source>
+				</configuration>
+			</plugin>
+
+			<!-- JDepend pour l'analyse des dépendances entre packages -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jdepend-maven-plugin</artifactId>
+				<version>2.0</version>
+			</plugin>
 		</plugins>
 	</reporting>
 
@@ -195,6 +246,57 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<!-- PMD - Analyseur de code source pour détecter les problèmes potentiels -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.21.0</version>
+				<configuration>
+					<linkXRef>true</linkXRef>
+					<sourceEncoding>UTF-8</sourceEncoding>
+					<minimumTokens>100</minimumTokens>
+					<targetJdk>17</targetJdk>
+					<excludes>
+						<exclude>**/generated/*.java</exclude>
+					</excludes>
+					<excludeRoots>
+						<excludeRoot>target/generated-sources</excludeRoot>
+					</excludeRoots>
+				</configuration>
+			</plugin>
+
+			<!-- SpotBugs - Pour trouver des bugs potentiels -->
+			<!-- <plugin>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+				<version>4.7.3.6</version>
+				<configuration>
+					<effort>Max</effort>
+					<threshold>Medium</threshold>
+					<xmlOutput>true</xmlOutput>
+					<excludeFilterFile>${project.basedir}/spotbugs-exclude.xml</excludeFilterFile>
+				</configuration>
+			</plugin> -->
+
+			<!-- CheckStyle - Pour vérifier le respect des standards de codage -->
+			<!-- <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.3.0</version>
+				<configuration>
+					<configLocation>google_checks.xml</configLocation>
+					<encoding>UTF-8</encoding>
+					<consoleOutput>true</consoleOutput>
+					<failsOnError>false</failsOnError>
+					<linkXRef>true</linkXRef>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>3.9.1.2184</version>
+			</plugin> -->
 		</plugins>
 	</build>
 
