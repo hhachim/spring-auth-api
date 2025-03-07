@@ -144,6 +144,11 @@
 					</reportSet>
 				</reportSets>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.26.0</version>
+			</plugin>
 		</plugins>
 	</reporting>
 
@@ -185,6 +190,23 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.26.0</version>
+				<configuration>
+					<linkXRef>true</linkXRef>
+					<sourceEncoding>UTF-8</sourceEncoding>
+					<minimumTokens>100</minimumTokens>
+					<targetJdk>17</targetJdk>
+					<excludes>
+						<exclude>**/generated/*.java</exclude>
+					</excludes>
+					<excludeRoots>
+						<excludeRoot>target/generated-sources</excludeRoot>
+					</excludeRoots>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
